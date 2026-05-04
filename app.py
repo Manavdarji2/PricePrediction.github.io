@@ -212,6 +212,10 @@ label {
 </style>
 """, unsafe_allow_html=True)
 
+# tell it based onold data so price may be low or high
+# and also mention that the model is trained on 2022 data
+st.title("Real Estate Price Prediction")
+st.markdown("<div class='footer'>This model is trained on 2022 data. The price may be low or high based on the old data.</div>", unsafe_allow_html=True)
 
 # ── Load model & feature columns ───────────────────────────────────────────────
 @st.cache_resource
