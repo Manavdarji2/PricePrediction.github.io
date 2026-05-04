@@ -46,31 +46,9 @@ jobs:
       - name: Smoke-test prediction logic
         run: |
           python -c "
-          import pickle, numpy as np, math
-
-          with open('Mumbai-price-pridection.pickle', 'rb') as f:
-              model = pickle.load(f)
-
-          LOCATIONS = sorted([
-              'Chembur', 'Ambernath', 'Andheri', 'Badlapur', 'Bandra', 'Bhandup',
-              'Kurla', 'Malad', 'Naigaon', 'Neral', 'Palghar',
-              'Panvel', 'Powai', 'Rasayani', 'Santacruz', 'Taloja',
-              'Thane', 'Ulwe', 'Vasai', 'Virar',
-          ])
-          DUMMY_COLS = sorted([l for l in LOCATIONS if l != 'Chembur'])
-          FEATURE_COLS = ['Total sqft', 'price_sqft', 'bhk_no'] + DUMMY_COLS
-
-          def predict_price(location, price_sqft, bhk_no, total_sqft):
-              data = np.zeros(len(FEATURE_COLS))
-              data[0] = total_sqft
-              data[1] = price_sqft
-              data[2] = bhk_no
-              if location != 'Chembur' and location in DUMMY_COLS:
-                  idx = FEATURE_COLS.index(location)
-                  data[idx] = 1
-              return model.predict([data])[0]
-
-          price = predict_price('Andheri', 15000, 2, 700)
+          import app
+          model = app.load_model()
+          price = app.predict_price(model, 'Andheri', 15000, 2, 700)
           print(f'Prediction for Andheri 2BHK 700sqft @ 15000/sqft: {price:.4f} Cr')
           assert price > 0, 'Price should be positive'
           print('Smoke test passed.')
