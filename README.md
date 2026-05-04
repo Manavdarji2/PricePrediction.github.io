@@ -1,44 +1,101 @@
-Here's a `README.md` file for your property price prediction project:
+# 🏙️ Mumbai House Price Predictor
 
-```markdown
-# Price Prediction in Mumbai
+A **Streamlit web application** that predicts residential property prices in Mumbai using a trained **Decision Tree Regressor** model (97.9% accuracy).
 
-This project aims to predict property prices in Mumbai using machine learning techniques. The primary objective is to create a model that can accurately estimate property prices based on various features such as location, size, and amenities.
+[![CI – Test Streamlit App](https://github.com/Manavdarji2/PricePrediction/actions/workflows/ci.yml/badge.svg)](https://github.com/Manavdarji2/PricePrediction/actions/workflows/ci.yml)
 
-## Project Overview
+---
 
-The goal of this project is to build a machine learning model capable of predicting property prices in Mumbai. The model will leverage a dataset containing various property features, allowing it to learn the underlying patterns in property valuation and provide accurate price predictions.
+## 🚀 Live App
 
-## Features
+Deploy this app instantly on [Streamlit Community Cloud](https://streamlit.io/cloud):
 
-### 1. Data Collection
-- Collect property price data from reliable sources, including details such as property location, size, amenities, and other relevant factors.
-- Ensure the dataset is comprehensive and covers a wide range of property types and locations within Mumbai.
+1. Fork / push this repo to GitHub
+2. Go to [share.streamlit.io](https://share.streamlit.io)
+3. Connect your repo → set **Main file path** to `app.py`
+4. Click **Deploy**
 
-### 2. Data Preprocessing
-- Clean and preprocess the data to handle any missing or inconsistent values.
-- Standardize data formats and encode categorical features to make them suitable for model training.
-- Conduct exploratory data analysis to understand the relationships between different features and property prices.
+---
 
-### 3. Model Training
-- Train a machine learning model using the preprocessed dataset.
-- Experiment with different algorithms (e.g., linear regression, decision trees, or advanced techniques like random forests and gradient boosting) to find the best-performing model.
-- Tune hyperparameters to improve model accuracy.
+## 📦 Project Structure
 
-### 4. Model Evaluation
-- Evaluate the model's performance using appropriate metrics, such as Mean Absolute Error (MAE), Mean Squared Error (MSE), and R-squared.
-- Perform cross-validation to ensure model robustness and reduce overfitting.
+```
+PricePrediction/
+├── app.py                          # Streamlit frontend
+├── requirements.txt                # Python dependencies
+├── Mumbai-price-pridection.pickle  # Trained ML model
+├── house_price_mumbai.csv          # Raw dataset
+├── Price-Pridection.ipynb          # Model training notebook
+└── .github/
+    └── workflows/
+        └── ci.yml                  # GitHub Actions CI pipeline
+```
 
-## Getting Started
+---
 
-### Prerequisites
-- Python 3.6 or later
-- Jupyter Notebook or any other preferred Python IDE
-- Libraries: `pandas`, `numpy`, `scikit-learn`, `matplotlib`, `seaborn`
+## 🛠️ Running Locally
 
+```bash
+# 1. Clone the repository
+git clone https://github.com/Manavdarji2/PricePrediction.git
+cd PricePrediction
 
-## Usage
+# 2. Install dependencies
+pip install -r requirements.txt
 
-1. Prepare the dataset by collecting and preprocessing the data.
-2. Run the model training script to train the machine learning model.
-3. Evaluate the model performance using the evaluation metrics provided.
+# 3. Launch the app
+streamlit run app.py
+```
+
+The app will open at **http://localhost:8501**.
+
+---
+
+## 🧠 Model Details
+
+| Property | Value |
+|---|---|
+| Algorithm | Decision Tree Regressor |
+| Accuracy (test set) | **97.9%** |
+| Cross-val accuracy | ~88% (ShuffleSplit, 8 folds) |
+| Training samples | 3,356 |
+| Features | Total sqft, Price/sqft, BHK, Location (one-hot) |
+| Target | Price in Crore (₹) |
+
+### Input Features
+
+| Feature | Type | Description |
+|---|---|---|
+| Location | Categorical | Mumbai suburb (20+ areas) |
+| BHK | Integer 1–5 | Number of bedrooms |
+| Total Area | Integer (sq ft) | Carpet / built-up area |
+| Price per sq ft | Integer (₹) | Local market rate |
+
+---
+
+## ⚙️ CI/CD Pipeline
+
+The `.github/workflows/ci.yml` workflow runs on every push/PR to `main`:
+
+1. **Install dependencies** from `requirements.txt`
+2. **Verify all imports** resolve correctly
+3. **Check the model file** is present
+4. **Smoke-test** the prediction logic end-to-end
+
+---
+
+## 📊 Data Preprocessing (Notebook)
+
+1. Convert price strings (`Cr` / `L`) → float in Crore
+2. Remove East/West suffixes from location names
+3. Drop locations with fewer than 25 listings
+4. Filter BHK types to standard 1–5 BHK Apartments
+5. Remove outliers using BHK price-per-sqft statistics
+6. One-hot encode Location (drop first to avoid multicollinearity)
+7. Train/test split (80/20), GridSearchCV for hyperparameter tuning
+
+---
+
+## 📝 License
+
+MIT
